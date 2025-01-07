@@ -1,0 +1,234 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Header 스타일 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+
+#logo h1 {
+    color: black;
+    font-size: 48px;
+    padding-left: 100px;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 3px;
+    margin-top: 0;
+    position: relative;
+}
+
+#logo h1 a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 100px;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 26px;
+}
+
+/* 커서가 위에 왔을 때 (hover) */
+nav ul li a:hover {
+    color: rgb(122, 122, 173);
+}
+
+/* 클릭했을 때 (active) */
+nav ul li a:active {
+    color: rgb(0, 0, 0);
+}
+
+
+/* 배경 이미지 및 텍스트 스타일 */
+#backgroundImageContainer {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+}
+
+#backgroundImageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#backgroundText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    max-width: 100%;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#backgroundText p {
+    white-space: nowrap;
+    line-height: 2;
+}
+
+
+/* About Us 섹션 */
+#introduce {
+    background-color: white;
+    padding: 40px;
+    width: 100%;
+}
+
+#introduce h2 {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 40px;
+    font-family: 'Gasoek One', sans-serif;
+    font-weight: normal;
+    text-shadow: 2px 2px 4px rgba(0, 3, 1, 0.3);
+    letter-spacing: 3px;
+}
+
+#service_one, #service_two {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#service_one img {
+    width: 50%;
+    max-width: 800px;
+    height: auto;
+    margin-right: 20px;
+}
+
+#service_two img {
+    width: 50%;
+    max-width: 700px;
+    height: auto;
+    margin-right: 20px;
+}
+
+#service_one h3, #service_two h3 {
+    font-size: 32px;
+    white-space: nowrap;
+    display: block;
+    margin-bottom: 15px;
+    font-family: 'Jua', sans-serif;
+}
+
+#service_one p, #service_two p {
+    font-size: 20px;
+    line-height: 1.5;
+    display: block;
+    margin-top: 10px;
+    font-family: 'Jua', sans-serif;
+    margin-right: 10px;
+}
+
+#service_two {
+    flex-direction: row-reverse;
+}
+
+/* Footer 스타일 */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#bottomMenu ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+#bottomMenu ul li {
+    margin: 0 15px;
+    letter-spacing: 1px;
+}
+
+#bottomMenu ul li a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+#bottomMenu ul li a:hover {
+    color: rgb(255, 255, 255);
+    border-bottom: 2px solid white;
+    padding-bottom: 5px;
+}
+
+#deco ul {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 30px;
+    font-size: 0;
+}
+
+#deco ul li {
+    margin: 10 10px;
+}
+
+#deco ul li img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    vertical-align: middle;
+}
+
+#deco ul li img:hover {
+    border: 2px solid rgb(0, 0, 0);
+}
+
+#company {
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+#company a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
