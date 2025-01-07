@@ -60,11 +60,28 @@ nav ul li a {
     text-decoration: none;
     color: black;
     font-size: 26px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute; 
+    bottom: -2px; 
+    left: 50%; 
+    width: 0; 
+    height: 2px; 
+    background-color: #ff7e5f;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
 }
 
 /* 커서가 위에 왔을 때 (hover) */
 nav ul li a:hover {
-    color: rgb(122, 122, 173);
+    color: #ff7e5f
 }
 
 /* 클릭했을 때 (active) */
@@ -95,7 +112,7 @@ nav ul li a:active {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 24px;
     font-weight: bold;
     max-width: 100%;
@@ -193,10 +210,20 @@ footer {
     position: relative;
 }
 
-#bottomMenu ul li a:hover {
-    color: rgb(255, 255, 255);
-    border-bottom: 2px solid white;
-    padding-bottom: 5px;
+#bottomMenu ul li a::after {
+    content: '';
+    position: absolute; 
+    bottom: -4px; 
+    left: 50%; 
+    width: 0; 
+    height: 1px; 
+    background-color: #ffffff;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+#bottomMenu ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
 }
 
 #deco ul {
@@ -229,6 +256,7 @@ footer {
 }
 
 #company a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
+    text-decoration: none; 
+    color: rgb(255, 255, 255); 
 }
+

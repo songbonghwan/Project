@@ -58,35 +58,36 @@ nav ul li {
     margin-right: 100px;
     font-family: 'Jua', sans-serif;
     font-weight: bold;
+    position: relative;
 }
 
 nav ul li a {
     text-decoration: none;
     color: black;
     font-size: 26px;
-}
-
-nav ul li a.underline {
-    text-decoration: none;
-    color: black;
-    font-size: 26px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
-/* 가상 요소로 밑줄 만들기 */
-nav ul li a.underline::after {
+nav ul li a::after {
     content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 100%;
+    position: absolute; 
+    bottom: -4px; 
+    left: 50%; 
+    width: 0; 
     height: 2px; 
-    background-color: rgb(216, 202, 255);
+    background-color: #ff7e5f;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
 }
 
 /* 커서가 위에 왔을 때 (hover) */
 nav ul li a:hover {
-    color: rgb(122, 122, 173);
+    color: #ff8968
 }
 
 /* 클릭했을 때 (active) */
@@ -144,10 +145,20 @@ footer {
     position: relative;
 }
 
-#bottomMenu ul li a:hover {
-    color: rgb(255, 255, 255);
-    border-bottom: 2px solid white;
-    padding-bottom: 5px;
+#bottomMenu ul li a::after {
+    content: '';
+    position: absolute; 
+    bottom: -4px; 
+    left: 50%; 
+    width: 0; 
+    height: 1px; 
+    background-color: #ffffff;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+#bottomMenu ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
 }
 
 #deco ul {
@@ -180,6 +191,7 @@ footer {
 }
 
 #company a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
+    text-decoration: none; 
+    color: rgb(255, 255, 255); 
 }
+
