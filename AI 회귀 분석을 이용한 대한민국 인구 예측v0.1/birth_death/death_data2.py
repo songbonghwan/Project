@@ -1,0 +1,179 @@
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.metrics import r2_score
+
+# 새로운 데이터 불러오기
+death_data = pd.read_csv('csv/사망자수_ADD_full.csv', index_col='AREA')
+elderly_population_data = pd.read_csv('csv/노인 인구_full.csv', index_col='AREA')
+cancer_data = pd.read_csv('csv/암 등록환자현황_full.csv', index_col='AREA')
+
+# 데이터를 전처리
+def clean_comma_columns(df):
+    for column in df.columns:
+        df[column] = df[column].replace({',': ''}, regex=True).astype(float)
+    return df
+
+death_data = clean_comma_columns(death_data)
+elderly_population_data = clean_comma_columns(elderly_population_data)
+cancer_data = clean_comma_columns(cancer_data)
+
+# 데이터의 공통된 연도 선택
+death_data.columns = death_data.columns.str.strip()
+elderly_population_data.columns = elderly_population_data.columns.str.strip()
+cancer_data.columns = cancer_data.columns.str.strip()
+
+common_years = list(set(death_data.columns) & set(elderly_population_data.columns) & set(cancer_data.columns))
+
+if len(common_years) == 0:
+    raise ValueError("공통된 연도가 없습니다. 데이터 확인이 필요합니다.")
+
+# 데이터를 공통 연도로 필터링
+death_data = death_data[common_years]
+elderly_population_data = elderly_population_data[common_years]
+cancer_data = cancer_data[common_years]
+
+# 1. 지역별로 예측을 진행할 수 있도록 반복문을 추가
+# 모든 지역에 대해 모델을 훈련하고 예측
+regions = death_data.index  # 지역 목록
+
+# 결과를 저장할 딕셔너리
+predictions = {}
+
+# 'ADD_UP' 지역은 제외
+regions = regions[regions != 'ADD_UP']
+
+for region in regions:
+    # 지역 이름에 공백이 있을 경우 처리
+    region = region.strip()
+
+    print(f"예측을 위한 지역: {region}")
+
+    # 특성 행렬(X)와 목표 변수 벡터(y) 설정 (지역별로)
+    X = pd.DataFrame({
+        'elderly_population': elderly_population_data.loc[region], 
+        'cancer_data': cancer_data.loc[region]
+    })
+
+    y = death_data.loc[region]
+
+    # 2. 데이터 표준화
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    # 3. PolynomialFeatures 적용
+    poly = PolynomialFeatures(degree=2, include_bias=False)
+    X_poly = poly.fit_transform(X_scaled)
+
+    # 4. 훈련 데이터와 테스트 데이터로 분리
+    X_train, X_test, y_train, y_test = train_test_split(X_poly, y, test_size=0.2, random_state=42)
+
+    # 5. Ridge 모델 하이퍼파라미터 튜닝 (GridSearchCV)
+    param_grid = {
+        'alpha': np.logspace(-4, 1, 6)
+    }
+
+    grid_search = GridSearchCV(Ridge(max_iter=10000, random_state=42), param_grid, cv=5, scoring='r2')
+    grid_search.fit(X_train, y_train)
+
+    best_alpha = grid_search.best_params_['alpha']
+    print(f"Best alpha for Ridge in {region}: {best_alpha}")
+
+    best_model = grid_search.best_estimator_
+
+    # 훈련 점수와 테스트 점수
+    train_score = best_model.score(X_train, y_train)
+    test_score = best_model.score(X_test, y_test)
+
+    print(f"Train score with best model for {region}: {train_score}")
+    print(f"Test score with best model for {region}: {test_score}")
+
+    # 예측값 계산
+    y_pred = best_model.predict(X_test)
+
+    # R2 평가 지표 출력
+    r2 = r2_score(y_test, y_pred)
+    print(f"R-squared for {region}: {r2}")
+
+    # 예측할 연도 배열 (2007년부터 2023년까지)
+    years_to_predict = np.array([2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023])
+
+    # 각 연도에 대해 해당하는 특성값을 추출
+    X_future = pd.DataFrame({
+        'elderly_population': elderly_population_data.loc[region, years_to_predict.astype(str)], 
+        'cancer_data': cancer_data.loc[region, years_to_predict.astype(str)]
+    })
+
+    # X_future 데이터 표준화
+    X_future_scaled = scaler.transform(X_future)
+
+    # PolynomialFeatures 적용 (훈련 시 사용한 것과 동일하게 변환)
+    X_future_poly = poly.transform(X_future_scaled)
+
+    # 예측값 계산
+    future_predictions = best_model.predict(X_future_poly)
+
+    # 예측된 값 저장
+    predictions[region] = future_predictions
+
+# 결과 출력
+print("\n2007년부터 2023년까지 각 지역별 예측된 사망자수:")
+for region, pred in predictions.items():
+    print(f"\n지역: {region}")
+    for year, death_count in zip(years_to_predict, pred):
+        print(f"{year}년 예측 사망자수: {death_count:.2f}")
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+
+# 기존 학습된 모델을 사용하여 2024년부터 2075년까지의 미래 사망자수 예측
+
+# 새로운 데이터 불러오기 (2024-2075년 예측된 데이터)
+elderly_population_2024_2075 = pd.read_csv('Sarimax_csv/예측된_노인_인구_2024_2075.csv')
+cancer_2024_2075 = pd.read_csv('Sarimax_csv/예측된_암환자_2024_2075.csv')
+
+# 공통된 도시 목록
+cities = elderly_population_2024_2075['City'].values
+
+# 예측할 연도 배열 (2024년부터 2075년까지)
+years_to_predict_future = np.arange(2024, 2076)
+
+# 결과를 저장할 빈 데이터프레임 초기화
+predictions_df = pd.DataFrame(columns=['City'] + years_to_predict_future.astype(str).tolist())
+
+# 기존 학습된 모델을 사용하여 각 도시별로 예측을 수행
+future_predictions = {}
+
+# 이전 코드에서 사용한 scaler와 poly 모델을 그대로 사용
+scaler = StandardScaler()  # 표준화 객체 (이미 기존 코드에서 사용한 scaler 객체가 있을 경우 이를 그대로 사용)
+poly = PolynomialFeatures(degree=2, include_bias=False)  # 다항 특성 변환 객체 (기존 코드에서 사용한 poly 객체를 사용)
+
+for city in cities:
+    print(f"예측을 위한 도시: {city}")
+
+    # 각 도시별로 데이터를 추출하여 X로 만듦
+    X_future = pd.DataFrame({
+        'elderly_population': elderly_population_2024_2075.loc[elderly_population_2024_2075['City'] == city, years_to_predict_future.astype(str)].values.flatten(),
+        'cancer_data': cancer_2024_2075.loc[cancer_2024_2075['City'] == city, years_to_predict_future.astype(str)].values.flatten()
+    })
+
+    # 데이터 표준화
+    X_future_scaled = scaler.fit_transform(X_future)
+
+    # PolynomialFeatures 적용
+    X_future_poly = poly.fit_transform(X_future_scaled)
+
+    # 이미 학습한 best_model을 사용해 예측
+    future_predictions[city] = best_model.predict(X_future_poly)
+
+    # 예측 결과를 DataFrame에 저장
+    predictions_df.loc[city] = [city] + future_predictions[city].tolist()
+
+# 예측된 사망자 수 결과 출력
+print("\n2024년부터 2075년까지 각 도시별 예측된 사망자수:")
+print(predictions_df)
+
+# 예측된 값을 CSV로 저장 (필요한 경우)
+predictions_df.to_csv('미래_사망자수_2024_2075.csv', index=False)

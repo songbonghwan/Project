@@ -1,0 +1,250 @@
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+/* Header 스타일 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    top: 0;
+    margin-top: 0;
+}
+
+#logo h1 {
+    color: black; 
+    font-size: 48px;
+    padding-left: 100px;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 3px;
+    margin-top: 0;
+    position: relative;
+}
+
+#logo h1 a {
+    text-decoration: none; 
+    color: black;
+}
+
+.logo-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+nav ul {
+    margin-right: 17px;
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 100px;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    position: relative;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: rgb(124, 124, 124);
+    font-size: 26px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+nav ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
+}
+
+/* 커서가 위에 왔을 때 (hover) */
+nav ul li a:hover {
+    color: #000000
+}
+
+/* 클릭했을 때 (active) */
+nav ul li a:active {
+    color: #7c7c7c;
+}
+
+#extinction-title {
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    color: #000000;         /* 글자 색 변경 (여기서는 토마토색으로 설정) */
+}
+
+/* Description 스타일 */
+#Description {
+    margin-top: 100px;
+}
+
+/* 1. 한 줄로 꽉 찬 공간 만들기 */
+.full-width-bar {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7c7c7c;
+    border-top: 4px solid #7c7c7c;
+    border-bottom: 4px solid #7c7c7c;
+}
+
+.full-width-bar p {
+    font-size: 21px;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+/* 메인 영역 스타일 */
+.choice {
+    margin: 30px 0; /* 위아래 여백 추가 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    text-align: center;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 차트 선택 버튼 스타일 */
+.chart-selector {
+    margin-right: 10px; /* 레이블과 선택 박스 사이의 간격 */
+    font-size: 25px;
+    font-family: 'Jua', sans-serif;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    letter-spacing: 4px; /* 글자 간 간격을 넓힘 */
+    justify-content: center; /* 내부 항목을 오른쪽으로 정렬 */
+    gap: 9.5px; /* 텍스트와 선택 박스 사이의 간격을 20px로 설정 */
+    text-align: right;  /* 텍스트 가운데 정렬 */
+    
+}
+
+.chart-selector select {
+    margin-right: 17.5px;
+    padding: 4.4px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #3788ca;
+    width: 70px;
+    letter-spacing: 0.015px; /* 글자 간 간격을 넓힘 */
+    text-align: center;  /* 텍스트 가운데 정렬 */
+}
+
+/* 차트 컨테이너 스타일 */
+.chart-container {
+    display: flex;
+    justify-content: center; /* 차트를 가운데로 정렬 */
+    max-width: 100%; /* 차트 컨테이너가 화면을 넘지 않도록 설정 */
+    margin: 15px auto;
+}
+
+/* 차트 캔버스 스타일 */
+canvas {
+    width: 90vw; /* 화면 너비의 90%로 차트 크기 설정 */
+    max-width: 1000px; /* 차트의 최대 너비 제한 */
+    height: 50vh; /* 화면 높이의 50%로 차트 크기 설정 */
+    display: none;
+    margin-bottom: 30px; /* 차트 간의 간격 추가 */
+}
+
+/* 차트가 보일 때의 스타일 */
+.chart-visible {
+    display: block;
+}
+
+/* Footer 스타일 */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+#bottomMenu ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+#bottomMenu ul li {
+    margin: 0 15px;
+    letter-spacing: 1px;
+}
+
+#bottomMenu ul li a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+#bottomMenu ul li a::after {
+    content: '';
+    position: absolute; 
+    bottom: -4px; 
+    left: 50%; 
+    width: 0; 
+    height: 1px; 
+    background-color: #ffffff;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+#bottomMenu ul li a:hover::after {
+    width: 100%; 
+    left: 0; 
+}
+
+#deco ul {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 30px;
+    font-size: 0;
+}
+
+#deco ul li {
+    margin: 10 10px;
+}
+
+#deco ul li img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    vertical-align: middle;
+}
+
+#deco ul li img:hover {
+    border: 2px solid rgb(0, 0, 0);
+}
+
+#company {
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+#company a {
+    text-decoration: none; 
+    color: rgb(255, 255, 255); 
+}
+
